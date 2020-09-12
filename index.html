@@ -85,9 +85,13 @@
             marker.style.opacity = 1;
         };
         marker.addEventListener('dragstart', function(event){
-            marker.style.opacity = 0.5;
+            marker.style.opacity = 0.01;
         });
         marker.addEventListener('dragend', function(event){
+            updatePosition(event);
+            calculatePercentage();
+        });
+        marker.addEventListener('touchmove', function(event){
             updatePosition(event);
             calculatePercentage();
         });
