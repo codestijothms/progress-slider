@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rate | Progress | Slider</title>
+    <style>
+        html,body{
+            margin: 0;
+            padding: 0;
+            background-color:#663366;
+            color: #ffffff;
+            font-family: "Trebuchet MS", Helvetica, sans-serif;
+            font-size: 24px;
+        }
+        .wrapper{
+            position: relative;
+            margin: 0 auto;
+            margin-top: 100px;
+            padding: 30px; 
+            width: 768px;
+            background-color:rgba(0,0,0,0.3);
+            border-radius: 4px;
+            text-align: center;
+        }
+        .base-line{
+            position: relative;
+            width: 100%;
+            height: 10px;
+            background-color: firebrick;
+            border-radius: 20px;
+        }
+        .marker{
+            position: absolute;
+            top: -10px;
+            left: 0;
+            width: 30px;
+            height: 30px;
+            background-color:mediumseagreen;
+            border-radius: 50%;
+            cursor: move;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="base-line" id="baseLine">
+            <div draggable="true" class="marker" id="Marker"></div>
+        </div>
+        <p>
+            <span id="Percentage"></span> <span>%</span>
+        </p>
+    </div>
+
+    <script>
+        var marker = document.getElementById('Marker');
+        var percentageEle = document.getElementById('Percentage');
+        var baseLineWidth = document.getElementById('baseLine').clientWidth
+        var left = 0;
+        var movedOffset = 0;
+        var percentage = 0;
+
+        percentageEle.innerHTML = percentage;
+
+        var calculatePercentage = function(){
+            var percentage = (left -0)/baseLineWidth*100;
+            if(percentage>99){
+                percentage = 100;
+            }
+            percentage = parseInt(percentage);
+            percentageEle.innerHTML = percentage;
+        };
+
+        var updatePosition = function(event){
+            movedOffset = event.clientX;
+            var rect = event.target.getBoundingClientRect();
+            left = left + (movedOffset-rect.x);
+            if(left<=0){
+                left = 0;
+            }
+            if(left>=baseLineWidth){
+                left = baseLineWidth - 2;
+            }
+            marker.style.left = left+"px";
+            marker.style.opacity = 1;
+        };
+        marker.addEventListener('dragstart', function(event){
+            marker.style.opacity = 0.5;
+        });
+        marker.addEventListener('dragend', function(event){
+            updatePosition(event);
+            calculatePercentage();
+        });
+    </script>
+</body>
+</html>
